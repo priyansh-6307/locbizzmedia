@@ -14,7 +14,7 @@ wordmark='<img class="wordmark" src="/assets/locbizz-media-logo.png" alt="LOCBIZ
 
 featured_projects=[
     {'title':'Kia Showcase','slug':'kia-showcase','description':'A cinematic Kia showcase built around precision, movement, and polished automotive detail.','date':'','vimeo':'/public/motion/2.mp4','video':'/public/motion/2.mp4','poster':'/assets/kia-showcase.jpg','logo':'/assets/kia-logo.svg','category':'Automotive','heading':'Kia, shaped by motion.','story':'A focused automotive visual built for a bold, modern reveal.','detailPath':'/#featured-work','route':'/projects/kia-showcase/'},
-    {'title':'Audi - RS6','slug':'audi-rs6','description':'A high-energy Audi RS6 showcase with sharp surfaces, dramatic light, and controlled speed.','date':'','vimeo':'/public/motion/4.mp4','video':'/public/motion/4.mp4','poster':'/assets/audi-rs6.jpg','logo':'/assets/audi-logo.svg','category':'Automotive','heading':'Performance in every frame.','story':'A performance-led study in reflections, stance, and velocity.','detailPath':'/#featured-work'},
+    {'title':'Audi - RS6','slug':'audi-rs6','description':'A high-energy Audi RS6 showcase with sharp surfaces, dramatic light, and controlled speed.','date':'','vimeo':'/public/motion/4.mp4','video':'/public/motion/4.mp4','poster':'/assets/audi-rs6.jpg','logo':'/assets/audi-logo.svg','category':'Automotive','heading':'Performance in every frame.','story':'A performance-led study in reflections, stance, and velocity.','detailPath':'/#featured-work','route':'/projects/audi-rs6/'},
     {'title':'Toyota Supra','slug':'toyota-supra','description':'A sleek Toyota Supra film driven by sculpted form, contrast, and kinetic camera movement.','date':'','vimeo':'/public/motion/8.mp4','video':'/public/motion/8.mp4','poster':'/assets/toyota-supra.jpg','logo':'/assets/toyota-logo.svg','category':'Automotive','heading':'A classic, reimagined.','story':'A stylized Supra showcase balancing iconic shape with contemporary motion.','detailPath':'/#featured-work'},
     {'title':'Ford Mustang','slug':'ford-mustang','description':'A cinematic Ford Mustang showcase with muscular lines, deep shadows, and a confident presence.','date':'','vimeo':'/public/motion/3.mp4','video':'/public/motion/3.mp4','poster':'/assets/ford-mustang.jpg','logo':'/assets/ford-logo.svg','category':'Automotive','heading':'Built to make an entrance.','story':'A bold automotive portrait built around attitude, light, and movement.','detailPath':'/#featured-work'},
 ]
@@ -59,10 +59,16 @@ write('/',home,'LOCBIZZ MEDIA — CGI, VFX & AI Studio','home')
 write('/contact/',f'<section class="contact-page shell"><div class="contact-heading reveal"><h1>Got a project in mind? Let’s chat and bring it to life.</h1></div><div class="contact-body"><div><h4>Get in touch</h4><a class="email-link" href="mailto:{email}">{email}</a></div>{form(True)}</div></section>','Contact — LOCBIZZ MEDIA',show_footer=False)
 
 kia_dir=OUT/'public'/'KIa'
-kia_videos=sorted(kia_dir.glob('*.mp4'),key=lambda path:int(path.stem))
+kia_videos=sorted((path for path in kia_dir.iterdir() if path.suffix.lower() in {'.mp4','.mov'}),key=lambda path:int(path.stem))
 kia_items=''.join(f'<article class="kia-video-card"><video src="/public/KIa/{video.name}" autoplay muted loop controls playsinline preload="metadata"></video><p class="mono">KIA SHOWCASE / {int(video.stem):02d}</p></article>' for video in kia_videos)
 kia_body=f'''<article class="project-detail shell kia-project"><div class="project-intro"><h1>Kia Showcase</h1><div><p>A cinematic study of Kia design, motion, and performance.</p><a class="modal-link" href="/#featured-work">← BACK TO FEATURED WORK</a></div></div><section class="kia-video-grid" aria-label="Kia Showcase videos">{kia_items}</section></article>'''
 write('/projects/kia-showcase/',kia_body,'Kia Showcase — LOCBIZZ MEDIA')
+
+audi_dir=OUT/'public'/'audi'
+audi_videos=sorted((path for path in audi_dir.iterdir() if path.suffix.lower() in {'.mp4','.mov'}),key=lambda path:int(path.stem))
+audi_items=''.join(f'<article class="audi-video-card"><video src="/public/audi/{video.name}" autoplay muted loop controls playsinline preload="metadata"></video><p class="mono">AUDI RS6 / {int(video.stem):02d}</p></article>' for video in audi_videos)
+audi_body=f'''<article class="project-detail shell audi-project"><div class="project-intro"><h1>Audi - RS6</h1><div><p>A performance-led Audi RS6 film built from speed, light, and precision.</p><a class="modal-link" href="/#featured-work">← BACK TO FEATURED WORK</a></div></div><section class="audi-video-grid" aria-label="Audi RS6 videos">{audi_items}</section></article>'''
+write('/projects/audi-rs6/',audi_body,'Audi - RS6 — LOCBIZZ MEDIA')
 
 (OUT/'favicon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" rx="9"/><rect x="6" y="5" width="28" height="30" rx="6" fill="none" stroke="white" stroke-width="2.5"/><path d="M14 12v16h12M24 13h3v10h-7" fill="none" stroke="white" stroke-width="2.5"/></svg>',encoding='utf-8')
 (OUT/'404.html').write_text(page('<section class="contact-page shell"><h1>Page not found.</h1><p style="margin-top:35px"><a class="modal-link" href="/">BACK TO LOCBIZZ MEDIA →</a></p></section>','Page not found — LOCBIZZ MEDIA',show_footer=False),encoding='utf-8')

@@ -13,7 +13,7 @@ class Links(HTMLParser):
             assert target.exists(),f'Missing {value} in {self.file}'
 parser=Links()
 pages=list(root.rglob('*.html'))
-assert len(pages)==4,len(pages)
+assert len(pages)==5,len(pages)
 for file in pages:
     text=file.read_text(encoding='utf-8')
     assert 'Lunchbox' not in text and 'lunchbox' not in text,file
@@ -46,4 +46,10 @@ assert kia.count('class="kia-video-card"')==12
 assert kia.count('autoplay muted loop controls playsinline')==12
 assert all(kia.find(kia_clips[i]) < kia.find(kia_clips[i+1]) for i in range(11))
 for clip in kia_clips: assert (root/clip.lstrip('/')).exists(), f'Missing Kia clip {clip}'
+audi=(root/'projects'/'audi-rs6'/'index.html').read_text(encoding='utf-8')
+audi_clips=[f'/public/audi/{i}{".mov" if i in (1,4,5) else ".mp4"}' for i in range(1,7)]
+assert audi.count('class="audi-video-card"')==6
+assert audi.count('autoplay muted loop controls playsinline')==6
+assert all(audi.find(audi_clips[i]) < audi.find(audi_clips[i+1]) for i in range(5))
+for clip in audi_clips: assert (root/clip.lstrip('/')).exists(), f'Missing Audi clip {clip}'
 print(f'PASS: {len(pages)} pages, all internal routes and assets, project data, LOCBIZZ branding, excluded section.')
