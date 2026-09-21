@@ -23,6 +23,7 @@ document.addEventListener('keydown',event=>{
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hero=document.querySelector('.hero');
 const ambientVideos=[...document.querySelectorAll('.reel-panel video,.about-hero video')];
+const detailVideos=[...document.querySelectorAll('.kia-video-card video,.audi-video-card video')];
 let motionPaused=reducedMotion;
 function setMotion(paused){
   motionPaused=paused;hero?.classList.toggle('paused',paused);
@@ -36,9 +37,15 @@ const mediaObserver=new IntersectionObserver(entries=>entries.forEach(({target,i
   if(!isIntersecting)target.pause();else if(!motionPaused)target.play().catch(()=>{});
 }),{threshold:.1});
 ambientVideos.forEach(video=>mediaObserver.observe(video));
+const detailObserver=new IntersectionObserver(entries=>entries.forEach(({target,isIntersecting})=>{
+  if(!isIntersecting)target.pause();else if(!reducedMotion)target.play().catch(()=>{});
+}),{rootMargin:'180px 0px',threshold:.1});
+detailVideos.forEach(video=>detailObserver.observe(video));
 document.addEventListener('visibilitychange',()=>{
   if(document.hidden)document.querySelectorAll('video').forEach(video=>video.pause());
-  else if(!motionPaused)ambientVideos.forEach(video=>{const box=video.getBoundingClientRect();if(box.bottom>0&&box.top<innerHeight)video.play().catch(()=>{})});
+  else if(!motionPaused){
+    [...ambientVideos,...detailVideos].forEach(video=>{const box=video.getBoundingClientRect();if(box.bottom>0&&box.top<innerHeight)video.play().catch(()=>{})});
+  }
 });
 const projectData=JSON.parse(document.querySelector('#project-data').textContent);
 const modal=document.querySelector('#project-modal');

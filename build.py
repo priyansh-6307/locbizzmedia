@@ -52,7 +52,7 @@ def write(path,body,title,kind='',show_footer=True):
     target.parent.mkdir(parents=True,exist_ok=True)
     target.write_text(page(body,title,path,kind,show_footer),encoding='utf-8')
 
-motion_clips=['/public/motion/1.mov','/public/motion/2.mp4','/public/motion/3.mp4','/public/motion/4.mp4','/public/motion/5.mp4','/public/motion/6.mov','/public/motion/7.mp4']
+motion_clips=['/public/motion/1.mp4','/public/motion/2.mp4','/public/motion/3.mp4','/public/motion/4.mp4','/public/motion/5.mp4','/public/motion/6.mp4','/public/motion/7.mp4']
 reels=''.join(f'<div class="reel-panel"><video src="{clip}" muted loop playsinline preload="metadata" aria-hidden="true"></video></div>' for clip in motion_clips*2)
 home=f'''<section class="hero"><div class="hero-brand">{wordmark}<h1 class="hero-tagline">Creative studio. CGI, VFX &amp; AI.</h1></div><div class="reel-window"><div class="reel-track">{reels}</div><a href="#featured-work" class="scroll-cue" aria-label="Explore featured work"></a></div><button class="motion-toggle" aria-pressed="false">PAUSE MOTION</button></section><section class="work shell" id="featured-work"><h2>Featured Work.</h2>{grid(featured_projects)}</section>'''
 write('/',home,'LOCBIZZ MEDIA — CGI, VFX & AI Studio','home')
@@ -60,13 +60,13 @@ write('/contact/',f'<section class="contact-page shell"><div class="contact-head
 
 kia_dir=OUT/'public'/'KIa'
 kia_videos=sorted((path for path in kia_dir.iterdir() if path.suffix.lower() in {'.mp4','.mov'}),key=lambda path:int(path.stem))
-kia_items=''.join(f'<article class="kia-video-card"><video src="/public/KIa/{video.name}" autoplay muted loop controls playsinline preload="metadata"></video><p class="mono">KIA SHOWCASE / {int(video.stem):02d}</p></article>' for video in kia_videos)
+kia_items=''.join(f'<article class="kia-video-card"><video src="/public/KIa/{video.name}" poster="/assets/kia-showcase.jpg" muted loop controls playsinline preload="none" data-autoplay="true"></video><p class="mono">KIA SHOWCASE / {int(video.stem):02d}</p></article>' for video in kia_videos)
 kia_body=f'''<article class="project-detail shell kia-project"><div class="project-intro"><h1>Kia Showcase</h1><div><p>A cinematic study of Kia design, motion, and performance.</p><a class="modal-link" href="/#featured-work">← BACK TO FEATURED WORK</a></div></div><section class="kia-video-grid" aria-label="Kia Showcase videos">{kia_items}</section></article>'''
 write('/projects/kia-showcase/',kia_body,'Kia Showcase — LOCBIZZ MEDIA')
 
 audi_dir=OUT/'public'/'audi'
 audi_videos=sorted((path for path in audi_dir.iterdir() if path.suffix.lower() in {'.mp4','.mov'}),key=lambda path:int(path.stem))
-audi_items=''.join(f'<article class="audi-video-card"><video src="/public/audi/{video.name}" autoplay muted loop controls playsinline preload="metadata"></video><p class="mono">AUDI RS6 / {int(video.stem):02d}</p></article>' for video in audi_videos)
+audi_items=''.join(f'<article class="audi-video-card"><video src="/public/audi/{video.name}" poster="/assets/audi-rs6.jpg" muted loop controls playsinline preload="none" data-autoplay="true"></video><p class="mono">AUDI RS6 / {int(video.stem):02d}</p></article>' for video in audi_videos)
 audi_body=f'''<article class="project-detail shell audi-project"><div class="project-intro"><h1>Audi - RS6</h1><div><p>A performance-led Audi RS6 film built from speed, light, and precision.</p><a class="modal-link" href="/#featured-work">← BACK TO FEATURED WORK</a></div></div><section class="audi-video-grid" aria-label="Audi RS6 videos">{audi_items}</section></article>'''
 write('/projects/audi-rs6/',audi_body,'Audi - RS6 — LOCBIZZ MEDIA')
 

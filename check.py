@@ -30,7 +30,7 @@ for title,clip,logo in [('Kia Showcase','/public/motion/2.mp4','/assets/kia-logo
     assert title in home and clip in home and logo in home
     assert (root/clip.lstrip('/')).exists(), f'Missing featured clip {clip}'
     assert (root/logo.lstrip('/')).exists(), f'Missing featured logo {logo}'
-motion=['/public/motion/1.mov','/public/motion/2.mp4','/public/motion/3.mp4','/public/motion/4.mp4','/public/motion/5.mp4','/public/motion/6.mov','/public/motion/7.mp4']
+motion=['/public/motion/1.mp4','/public/motion/2.mp4','/public/motion/3.mp4','/public/motion/4.mp4','/public/motion/5.mp4','/public/motion/6.mp4','/public/motion/7.mp4']
 hero=home.split('<section class="work shell"',1)[0]
 assert hero.count('class="reel-panel"')==14
 assert hero.find(motion[0]) < hero.find(motion[1]) < hero.find(motion[2]) < hero.find(motion[3]) < hero.find(motion[4]) < hero.find(motion[5]) < hero.find(motion[6])
@@ -43,13 +43,13 @@ for clip in motion:
 kia=(root/'projects'/'kia-showcase'/'index.html').read_text(encoding='utf-8')
 kia_clips=[f'/public/KIa/{i}.mp4' for i in range(1,13)]
 assert kia.count('class="kia-video-card"')==12
-assert kia.count('autoplay muted loop controls playsinline')==12
+assert kia.count('muted loop controls playsinline preload="none" data-autoplay="true"')==12
 assert all(kia.find(kia_clips[i]) < kia.find(kia_clips[i+1]) for i in range(11))
 for clip in kia_clips: assert (root/clip.lstrip('/')).exists(), f'Missing Kia clip {clip}'
 audi=(root/'projects'/'audi-rs6'/'index.html').read_text(encoding='utf-8')
-audi_clips=[f'/public/audi/{i}{".mov" if i in (1,4,5) else ".mp4"}' for i in range(1,7)]
+audi_clips=[f'/public/audi/{i}.mp4' for i in range(1,7)]
 assert audi.count('class="audi-video-card"')==6
-assert audi.count('autoplay muted loop controls playsinline')==6
+assert audi.count('muted loop controls playsinline preload="none" data-autoplay="true"')==6
 assert all(audi.find(audi_clips[i]) < audi.find(audi_clips[i+1]) for i in range(5))
 for clip in audi_clips: assert (root/clip.lstrip('/')).exists(), f'Missing Audi clip {clip}'
 supra=(root/'projects'/'toyota-supra'/'index.html').read_text(encoding='utf-8')
