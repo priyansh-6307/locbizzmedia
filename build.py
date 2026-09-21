@@ -60,7 +60,7 @@ write('/contact/',f'<section class="contact-page shell"><div class="contact-head
 
 kia_dir=OUT/'public'/'KIa'
 kia_videos=sorted(kia_dir.glob('*.mp4'),key=lambda path:int(path.stem))
-kia_items=''.join(f'<article class="kia-video-card"><video src="/public/KIa/{video.name}" controls playsinline preload="metadata"></video><p class="mono">KIA SHOWCASE / {int(video.stem):02d}</p></article>' for video in kia_videos)
+kia_items=''.join(f'<article class="kia-video-card"><video src="/public/KIa/{video.name}" autoplay muted loop controls playsinline preload="metadata"></video><p class="mono">KIA SHOWCASE / {int(video.stem):02d}</p></article>' for video in kia_videos)
 kia_body=f'''<article class="project-detail shell kia-project"><div class="project-intro"><h1>Kia Showcase</h1><div><p>All Kia showcase clips, arranged in ascending order.</p><a class="modal-link" href="/#featured-work">← BACK TO FEATURED WORK</a></div></div><section class="kia-video-grid" aria-label="Kia Showcase videos">{kia_items}</section></article>'''
 write('/projects/kia-showcase/',kia_body,'Kia Showcase — LOCBIZZ MEDIA')
 

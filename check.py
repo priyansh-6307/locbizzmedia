@@ -43,6 +43,7 @@ for clip in motion:
 kia=(root/'projects'/'kia-showcase'/'index.html').read_text(encoding='utf-8')
 kia_clips=[f'/public/KIa/{i}.mp4' for i in range(1,13)]
 assert kia.count('class="kia-video-card"')==12
+assert kia.count('autoplay muted loop controls playsinline')==12
 assert all(kia.find(kia_clips[i]) < kia.find(kia_clips[i+1]) for i in range(11))
 for clip in kia_clips: assert (root/clip.lstrip('/')).exists(), f'Missing Kia clip {clip}'
 print(f'PASS: {len(pages)} pages, all internal routes and assets, project data, LOCBIZZ branding, excluded section.')
