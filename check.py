@@ -31,8 +31,13 @@ for title,clip,logo in [('Kia Showcase','/public/motion/2.mp4','/assets/kia-logo
     assert (root/clip.lstrip('/')).exists(), f'Missing featured clip {clip}'
     assert (root/logo.lstrip('/')).exists(), f'Missing featured logo {logo}'
 motion=['/public/motion/1.mov','/public/motion/2.mp4','/public/motion/3.mp4','/public/motion/4.mp4','/public/motion/5.mp4','/public/motion/6.mov','/public/motion/7.mp4']
-assert home.count('class="reel-panel"')==14
-assert home.find(motion[0]) < home.find(motion[1]) < home.find(motion[2]) < home.find(motion[3]) < home.find(motion[4]) < home.find(motion[5]) < home.find(motion[6])
+hero=home.split('<section class="work shell"',1)[0]
+assert hero.count('class="reel-panel"')==14
+assert hero.find(motion[0]) < hero.find(motion[1]) < hero.find(motion[2]) < hero.find(motion[3]) < hero.find(motion[4]) < hero.find(motion[5]) < hero.find(motion[6])
+for clip in motion: assert hero.count(clip)==2, f'Motion clip is not repeated for a seamless loop: {clip}'
+style=(root/'style.css').read_text(encoding='utf-8')
+assert 'animation:reel 58s linear infinite' in style
+assert '@keyframes reel{from{transform:translateX(-230px)}to{transform:translateX(-3790px)}}' in style
 for clip in motion:
     assert (root/clip.lstrip('/')).exists(), f'Missing motion clip {clip}'
 print(f'PASS: {len(pages)} pages, all internal routes and assets, project data, LOCBIZZ branding, excluded section.')
