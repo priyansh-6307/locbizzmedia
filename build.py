@@ -61,7 +61,7 @@ write('/contact/',f'<section class="contact-page shell"><div class="contact-head
 kia_dir=OUT/'public'/'KIa'
 kia_videos=sorted(kia_dir.glob('*.mp4'),key=lambda path:int(path.stem))
 kia_items=''.join(f'<article class="kia-video-card"><video src="/public/KIa/{video.name}" autoplay muted loop controls playsinline preload="metadata"></video><p class="mono">KIA SHOWCASE / {int(video.stem):02d}</p></article>' for video in kia_videos)
-kia_body=f'''<article class="project-detail shell kia-project"><div class="project-intro"><h1>Kia Showcase</h1><div><p>All Kia showcase clips, arranged in ascending order.</p><a class="modal-link" href="/#featured-work">← BACK TO FEATURED WORK</a></div></div><section class="kia-video-grid" aria-label="Kia Showcase videos">{kia_items}</section></article>'''
+kia_body=f'''<article class="project-detail shell kia-project"><div class="project-intro"><h1>Kia Showcase</h1><div><p>A cinematic study of Kia design, motion, and performance.</p><a class="modal-link" href="/#featured-work">← BACK TO FEATURED WORK</a></div></div><section class="kia-video-grid" aria-label="Kia Showcase videos">{kia_items}</section></article>'''
 write('/projects/kia-showcase/',kia_body,'Kia Showcase — LOCBIZZ MEDIA')
 
 (OUT/'favicon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" rx="9"/><rect x="6" y="5" width="28" height="30" rx="6" fill="none" stroke="white" stroke-width="2.5"/><path d="M14 12v16h12M24 13h3v10h-7" fill="none" stroke="white" stroke-width="2.5"/></svg>',encoding='utf-8')
