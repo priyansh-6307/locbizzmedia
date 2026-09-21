@@ -13,7 +13,7 @@ class Links(HTMLParser):
             assert target.exists(),f'Missing {value} in {self.file}'
 parser=Links()
 pages=list(root.rglob('*.html'))
-assert len(pages)==26,len(pages)
+assert len(pages)==3,len(pages)
 for file in pages:
     text=file.read_text(encoding='utf-8')
     assert 'Lunchbox' not in text and 'lunchbox' not in text,file
@@ -23,6 +23,8 @@ projects=json.loads((root.parent/'content/projects.json').read_text(encoding='ut
 assert len(projects)==12 and len({x['slug'] for x in projects})==12
 assert {x['category'] for x in projects}=={'Automotive','Gaming','Product'}
 home=(root/'index.html').read_text(encoding='utf-8')
+for removed_route in ('/projects/','/about/','/blog/'):
+    assert f'href="{removed_route}"' not in home, f'Exposed removed route {removed_route}'
 assert home.count('class="project-card"')==4
 for title,clip,logo in [('Kia Showcase','/public/motion/2.mp4','/assets/kia-logo.svg'),('Audi - RS6','/public/motion/4.mp4','/assets/audi-logo.svg'),('Toyota Supra','/public/motion/8.mp4','/assets/toyota-logo.svg'),('Ford Mustang','/public/motion/3.mp4','/assets/ford-logo.svg')]:
     assert title in home and clip in home and logo in home
