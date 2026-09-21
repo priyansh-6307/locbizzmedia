@@ -56,7 +56,7 @@ document.querySelectorAll('.project-card').forEach(card=>{
     modal.querySelector('.modal-description').textContent=project.description;
     modal.querySelector('.modal-logo').src=project.logo;
     modal.querySelector('.modal-logo').alt=project.title+' logo';
-    modal.querySelector('.modal-link').href='/projects/'+project.slug+'/';
+    modal.querySelector('.modal-link').href=project.detailPath||('/projects/'+project.slug+'/');
     modal.querySelector('.modal-full').href=project.vimeo;
     modalVideo.src=project.video;modalVideo.poster=project.poster;modalVideo.muted=false;
     modal.showModal();document.body.classList.add('locked');modalVideo.play().catch(()=>{});

@@ -23,6 +23,11 @@ projects=json.loads((root.parent/'content/projects.json').read_text(encoding='ut
 assert len(projects)==12 and len({x['slug'] for x in projects})==12
 assert {x['category'] for x in projects}=={'Automotive','Gaming','Product'}
 home=(root/'index.html').read_text(encoding='utf-8')
+assert home.count('class="project-card"')==4
+for title,clip,logo in [('Kia Showcase','/public/motion/2.mp4','/assets/kia-logo.svg'),('Audi - RS6','/public/motion/4.mp4','/assets/audi-logo.svg'),('Toyota Supra','/public/motion/8.mp4','/assets/toyota-logo.svg'),('Ford Mustang','/public/motion/3.mp4','/assets/ford-logo.svg')]:
+    assert title in home and clip in home and logo in home
+    assert (root/clip.lstrip('/')).exists(), f'Missing featured clip {clip}'
+    assert (root/logo.lstrip('/')).exists(), f'Missing featured logo {logo}'
 motion=['/public/motion/1.mov','/public/motion/2.mp4','/public/motion/3.mp4','/public/motion/4.mp4','/public/motion/5.mp4','/public/motion/6.mov','/public/motion/7.mp4']
 assert home.count('class="reel-panel"')==14
 assert home.find(motion[0]) < home.find(motion[1]) < home.find(motion[2]) < home.find(motion[3]) < home.find(motion[4]) < home.find(motion[5]) < home.find(motion[6])
