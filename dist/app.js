@@ -52,6 +52,7 @@ document.querySelectorAll('.project-card').forEach(card=>{
   card.addEventListener('focus',start);card.addEventListener('blur',stop);
   card.addEventListener('click',()=>{
     stop();const project=projectData.find(item=>item.slug===card.dataset.project);
+    if(project.route){location.href=project.route;return}
     returnFocus=card; modal.querySelector('h2').textContent=project.title;
     modal.querySelector('.modal-description').textContent=project.description;
     modal.querySelector('.modal-logo').src=project.logo;

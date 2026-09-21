@@ -13,7 +13,7 @@ class Links(HTMLParser):
             assert target.exists(),f'Missing {value} in {self.file}'
 parser=Links()
 pages=list(root.rglob('*.html'))
-assert len(pages)==3,len(pages)
+assert len(pages)==4,len(pages)
 for file in pages:
     text=file.read_text(encoding='utf-8')
     assert 'Lunchbox' not in text and 'lunchbox' not in text,file
@@ -40,4 +40,9 @@ assert 'animation:reel 58s linear infinite' in style
 assert '@keyframes reel{from{transform:translateX(-230px)}to{transform:translateX(-3790px)}}' in style
 for clip in motion:
     assert (root/clip.lstrip('/')).exists(), f'Missing motion clip {clip}'
+kia=(root/'projects'/'kia-showcase'/'index.html').read_text(encoding='utf-8')
+kia_clips=[f'/public/KIa/{i}.mp4' for i in range(1,13)]
+assert kia.count('class="kia-video-card"')==12
+assert all(kia.find(kia_clips[i]) < kia.find(kia_clips[i+1]) for i in range(11))
+for clip in kia_clips: assert (root/clip.lstrip('/')).exists(), f'Missing Kia clip {clip}'
 print(f'PASS: {len(pages)} pages, all internal routes and assets, project data, LOCBIZZ branding, excluded section.')
