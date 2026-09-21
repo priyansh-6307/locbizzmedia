@@ -45,7 +45,8 @@ def write(path,body,title,kind='',show_footer=True):
     target.parent.mkdir(parents=True,exist_ok=True)
     target.write_text(page(body,title,path,kind,show_footer),encoding='utf-8')
 
-reels=''.join(f'<div class="reel-panel"><img src="{e(p["poster"])}" alt=""><video src="{p["video"]}" poster="{e(p["poster"])}" muted loop playsinline preload="metadata" aria-hidden="true"></video></div>' for p in [projects[0],projects[1],projects[3]]*2)
+motion_clips=['/public/motion/1.mov','/public/motion/2.mp4','/public/motion/3.mp4','/public/motion/4.mp4','/public/motion/5.mp4','/public/motion/6.mov','/public/motion/7.mp4']
+reels=''.join(f'<div class="reel-panel"><video src="{clip}" muted loop playsinline preload="metadata" aria-hidden="true"></video></div>' for clip in motion_clips*2)
 home=f'''<section class="hero"><div class="hero-brand">{wordmark}<h1 class="hero-tagline">Creative studio. CGI, VFX &amp; AI.</h1></div><div class="reel-window"><div class="reel-track">{reels}</div><a href="#featured-work" class="scroll-cue" aria-label="Explore featured work"></a></div><button class="motion-toggle" aria-pressed="false">PAUSE MOTION</button></section><section class="work shell" id="featured-work"><h2>Featured Work.</h2>{grid(projects[:6])}<div class="all-projects"><a href="/projects/">View All Projects&nbsp; -&gt;</a></div></section>'''
 write('/',home,'LOCBIZZ MEDIA — CGI, VFX & AI Studio','home')
 filters=''.join(f'<a data-filter="{name.lower()}" href="/projects/{"?category="+name.lower() if name!="All" else ""}" aria-current="{str(name=="All").lower()}">{name}</a>' for name in ['All','Automotive','Gaming','Product'])

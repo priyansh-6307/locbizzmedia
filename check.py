@@ -22,4 +22,10 @@ for file in pages:
 projects=json.loads((root.parent/'content/projects.json').read_text(encoding='utf-8'))
 assert len(projects)==12 and len({x['slug'] for x in projects})==12
 assert {x['category'] for x in projects}=={'Automotive','Gaming','Product'}
+home=(root/'index.html').read_text(encoding='utf-8')
+motion=['/public/motion/1.mov','/public/motion/2.mp4','/public/motion/3.mp4','/public/motion/4.mp4','/public/motion/5.mp4','/public/motion/6.mov','/public/motion/7.mp4']
+assert home.count('class="reel-panel"')==14
+assert home.find(motion[0]) < home.find(motion[1]) < home.find(motion[2]) < home.find(motion[3]) < home.find(motion[4]) < home.find(motion[5]) < home.find(motion[6])
+for clip in motion:
+    assert (root/clip.lstrip('/')).exists(), f'Missing motion clip {clip}'
 print(f'PASS: {len(pages)} pages, all internal routes and assets, project data, LOCBIZZ branding, excluded section.')
