@@ -22,7 +22,7 @@ featured_projects=[
 def form(contact=False):
     prefix='contact' if contact else 'footer'
     labels=lambda name: f'<label for="{prefix}-{name.lower()}">{name}</label>' if contact else ''
-    return f'''<form class="inquiry {'contact-form' if contact else ''}" action="mailto:{email}" method="get">
+    return f'''<form class="inquiry {'contact-form' if contact else ''}" action="/contact/" method="get">
     <h3>{'Send a message' if contact else 'Project Inquiries.'}</h3>
     <div class="form-row"><div>{labels('Name')}<input id="{prefix}-name" name="name" aria-label="Name" autocomplete="name" placeholder="Name" maxlength="120" required></div><div>{labels('Email')}<input id="{prefix}-email" name="email" aria-label="Email" type="email" autocomplete="email" placeholder="Email" maxlength="254" required></div></div>
     {labels('Message')}<textarea id="{prefix}-message" name="message" aria-label="Message" placeholder="Message" maxlength="5000" required></textarea>
