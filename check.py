@@ -13,7 +13,7 @@ class Links(HTMLParser):
             assert target.exists(),f'Missing {value} in {self.file}'
 parser=Links()
 pages=list(root.rglob('*.html'))
-assert len(pages)==5,len(pages)
+assert len(pages)==6,len(pages)
 for file in pages:
     text=file.read_text(encoding='utf-8')
     assert 'Lunchbox' not in text and 'lunchbox' not in text,file
@@ -52,4 +52,10 @@ assert audi.count('class="audi-video-card"')==6
 assert audi.count('autoplay muted loop controls playsinline')==6
 assert all(audi.find(audi_clips[i]) < audi.find(audi_clips[i+1]) for i in range(5))
 for clip in audi_clips: assert (root/clip.lstrip('/')).exists(), f'Missing Audi clip {clip}'
+supra=(root/'projects'/'toyota-supra'/'index.html').read_text(encoding='utf-8')
+supra_images=[f'/public/supra/New%20Project%20%28{i}%29.webp' for i in range(2,7)]
+assert 'youtube-nocookie.com/embed/qKkCl0MyXwU?autoplay=1&amp;mute=1' in supra
+assert supra.count('class="supra-image-card"')==5
+assert all(supra.find(supra_images[i]) < supra.find(supra_images[i+1]) for i in range(4))
+for image in supra_images: assert (root/unquote(image.lstrip('/'))).exists(), f'Missing Supra image {image}'
 print(f'PASS: {len(pages)} pages, all internal routes and assets, project data, LOCBIZZ branding, excluded section.')

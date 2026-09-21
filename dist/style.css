@@ -17,3 +17,5 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
 
 .kia-video-grid,.audi-video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding-bottom:110px}.kia-video-card,.audi-video-card{background:#111;border-radius:8px;overflow:hidden}.kia-video-card video,.audi-video-card video{width:100%;aspect-ratio:16/9;object-fit:cover;background:#0b0b0b}.kia-video-card p,.audi-video-card p{padding:12px 14px;color:#aaa}@media(max-width:600px){.kia-video-grid,.audi-video-grid{grid-template-columns:1fr;padding-bottom:75px}}
+
+.supra-film{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:8px;background:#0b0b0b}.supra-image-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:6px 0 110px}.supra-image-card{margin:0;background:#111;border-radius:8px;overflow:hidden}.supra-image-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}.supra-image-card figcaption{padding:12px 14px;color:#aaa}@media(max-width:600px){.supra-image-grid{grid-template-columns:1fr;padding-bottom:75px}}
