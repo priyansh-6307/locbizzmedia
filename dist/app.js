@@ -24,7 +24,23 @@ const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hero=document.querySelector('.hero');
 const ambientVideos=[...document.querySelectorAll('.reel-panel video,.about-hero video')];
 const detailVideos=[...document.querySelectorAll('.kia-video-card video,.audi-video-card video')];
+const reelWindow=document.querySelector('.reel-window');
+const reelTrack=document.querySelector('.reel-track');
 let motionPaused=reducedMotion;
+let reelX=0,reelDragging=false,reelPointerId=null,reelDragStart=0,reelOrigin=0,reelLastFrame=performance.now();
+const reelStart=()=>innerWidth>=1600?-280:innerWidth<=600?-190:-230;
+const reelWidth=()=>reelTrack?.scrollWidth/2||0;
+function wrapReel(){const start=reelStart(),width=reelWidth();if(!width)return;while(reelX<=start-width)reelX+=width;while(reelX>start)reelX-=width}
+function renderReel(){if(reelTrack)reelTrack.style.transform=`translate3d(${reelX}px,0,0)`}
+if(reelWindow&&reelTrack){
+  reelTrack.style.animation='none';reelX=reelStart();renderReel();reelWindow.style.touchAction='pan-y';
+  const endDrag=event=>{if(!reelDragging||event.pointerId!==reelPointerId)return;reelDragging=false;reelWindow.classList.remove('dragging');if(reelWindow.hasPointerCapture(event.pointerId))reelWindow.releasePointerCapture(event.pointerId);reelPointerId=null};
+  reelWindow.addEventListener('pointerdown',event=>{if(event.target.closest('a,button'))return;reelDragging=true;reelPointerId=event.pointerId;reelDragStart=event.clientX;reelOrigin=reelX;reelWindow.classList.add('dragging');reelWindow.setPointerCapture(event.pointerId)});
+  reelWindow.addEventListener('pointermove',event=>{if(!reelDragging||event.pointerId!==reelPointerId)return;event.preventDefault();reelX=reelOrigin+event.clientX-reelDragStart;wrapReel();renderReel()});
+  reelWindow.addEventListener('pointerup',endDrag);reelWindow.addEventListener('pointercancel',endDrag);reelWindow.addEventListener('lostpointercapture',endDrag);
+  const animateReel=now=>{const delta=Math.min((now-reelLastFrame)/1000,.05);reelLastFrame=now;if(!motionPaused&&!reelDragging){reelX-=reelWidth()/58*delta;wrapReel();renderReel()}requestAnimationFrame(animateReel)};
+  requestAnimationFrame(animateReel);
+}
 function setMotion(paused){
   motionPaused=paused;hero?.classList.toggle('paused',paused);
   const button=document.querySelector('.motion-toggle');

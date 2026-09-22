@@ -36,8 +36,9 @@ assert hero.count('class="reel-panel"')==14
 assert hero.find(motion[0]) < hero.find(motion[1]) < hero.find(motion[2]) < hero.find(motion[3]) < hero.find(motion[4]) < hero.find(motion[5]) < hero.find(motion[6])
 for clip in motion: assert hero.count(clip)==2, f'Motion clip is not repeated for a seamless loop: {clip}'
 style=(root/'style.css').read_text(encoding='utf-8')
-assert 'animation:reel 58s linear infinite' in style
-assert '@keyframes reel{from{transform:translateX(-230px)}to{transform:translateX(-3790px)}}' in style
+assert 'cursor:grab' in style and 'transform:translate3d(var(--reel-x,-230px),0,0)' in style
+app=(root/'app.js').read_text(encoding='utf-8')
+assert "reelWindow.addEventListener('pointerdown'" in app and "reelWindow.addEventListener('pointermove'" in app
 for clip in motion:
     assert (root/clip.lstrip('/')).exists(), f'Missing motion clip {clip}'
 kia=(root/'projects'/'kia-showcase'/'index.html').read_text(encoding='utf-8')
