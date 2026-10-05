@@ -57,6 +57,7 @@ assert all(audi.find(audi_clips[i]) < audi.find(audi_clips[i+1]) for i in range(
 for clip in audi_clips: assert (root/clip.lstrip('/')).exists(), f'Missing Audi clip {clip}'
 bmw=(root/'projects'/'bmw-showcase'/'index.html').read_text(encoding='utf-8')
 bmw_clips=[f'/public/bmw/{i}.mp4' for i in range(1,9)]
+assert bmw.find('https://www.instagram.com/reel/DeE9sJdhe9n/embed/') < bmw.find(bmw_clips[0])
 assert bmw.count('class="bmw-video-card"')==8
 assert bmw.count('muted loop controls playsinline preload="none" data-autoplay="true"')==8
 assert all(bmw.find(bmw_clips[i]) < bmw.find(bmw_clips[i+1]) for i in range(7))

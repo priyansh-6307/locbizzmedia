@@ -73,7 +73,7 @@ write('/projects/audi-rs6/',audi_body,'Audi - RS6 — LOCBIZZ MEDIA')
 
 bmw_videos=sorted((OUT/'public'/'bmw').glob('*.mp4'),key=lambda video:int(video.stem))
 bmw_items=''.join(f'<article class="bmw-video-card"><video src="/public/bmw/{video.name}" poster="/assets/bmwshowcase.webp" muted loop controls playsinline preload="none" data-autoplay="true"></video><p class="mono">BMW SHOWCASE / {int(video.stem):02d}</p></article>' for video in bmw_videos)
-bmw_body=f'''<article class="project-detail shell bmw-project"><div class="project-intro"><h1>BMW Showcase</h1><div><p>A cinematic study of BMW design, light, and presence.</p><a class="modal-link" href="/#featured-work">← BACK TO FEATURED WORK</a></div></div><section class="bmw-video-grid" aria-label="BMW Showcase videos">{bmw_items}</section></article>'''
+bmw_body=f'''<article class="project-detail shell bmw-project"><div class="project-intro"><h1>BMW Showcase</h1><div><p>A cinematic study of BMW design, light, and presence.</p><a class="modal-link" href="/#featured-work">← BACK TO FEATURED WORK</a></div></div><section class="bmw-main-film" aria-label="BMW main film"><iframe src="https://www.instagram.com/reel/DeE9sJdhe9n/embed/" title="BMW Showcase — main film on Instagram" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe><a class="modal-link" href="https://www.instagram.com/reel/DeE9sJdhe9n/" target="_blank" rel="noopener noreferrer">WATCH ON INSTAGRAM ↗</a></section><section class="bmw-video-grid" aria-label="BMW Showcase videos">{bmw_items}</section></article>'''
 write('/projects/bmw-showcase/',bmw_body,'BMW Showcase — LOCBIZZ MEDIA')
 
 supra_dir=OUT/'public'/'supra'
