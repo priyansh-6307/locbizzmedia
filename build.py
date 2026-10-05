@@ -13,6 +13,7 @@ icon='<img class="brand-mark" src="/assets/locbizz-media-logo.png" alt="LOCBIZZ 
 wordmark='<img class="wordmark" src="/assets/locbizz-media-logo.png" alt="LOCBIZZ MEDIA" width="1774" height="887">'
 
 featured_projects=[
+    {'title':'BMW Showcase','slug':'bmw-showcase','description':'A cinematic BMW showcase exploring sculpted design, atmospheric lighting, and motion.','date':'','vimeo':'/public/bmw/1.mp4','video':'/public/bmw/1.mp4','poster':'/assets/bmwshowcase.webp','logo':'/assets/C3pIXvBNo8ryvhOjPv3aZ1LAI4.png','category':'Automotive','heading':'Design in motion.','story':'A cinematic study of BMW design and presence.','detailPath':'/#featured-work','route':'/projects/bmw-showcase/'},
     {'title':'Kia Showcase','slug':'kia-showcase','description':'A cinematic Kia showcase built around precision, movement, and polished automotive detail.','date':'','vimeo':'/public/motion/2.mp4','video':'/public/motion/2.mp4','poster':'/assets/kia-showcase.jpg','logo':'/assets/kia-logo.svg','category':'Automotive','heading':'Kia, shaped by motion.','story':'A focused automotive visual built for a bold, modern reveal.','detailPath':'/#featured-work','route':'/projects/kia-showcase/'},
     {'title':'Audi - RS6','slug':'audi-rs6','description':'A high-energy Audi RS6 showcase with sharp surfaces, dramatic light, and controlled speed.','date':'','vimeo':'/public/motion/4.mp4','video':'/public/motion/4.mp4','poster':'/assets/audi-rs6.jpg','logo':'/assets/audi-logo.svg','category':'Automotive','heading':'Performance in every frame.','story':'A performance-led study in reflections, stance, and velocity.','detailPath':'/#featured-work','route':'/projects/audi-rs6/'},
     {'title':'Toyota Supra','slug':'toyota-supra','description':'A sleek Toyota Supra film driven by sculpted form, contrast, and kinetic camera movement.','date':'','vimeo':'/public/motion/8.mp4','video':'/public/motion/8.mp4','poster':'/assets/toyota-supra.jpg','logo':'/assets/toyota-logo.svg','category':'Automotive','heading':'A classic, reimagined.','story':'A stylized Supra showcase balancing iconic shape with contemporary motion.','detailPath':'/#featured-work','route':'/projects/toyota-supra/'},
@@ -52,7 +53,7 @@ def write(path,body,title,kind='',show_footer=True):
     target.parent.mkdir(parents=True,exist_ok=True)
     target.write_text(page(body,title,path,kind,show_footer),encoding='utf-8')
 
-motion_clips=['/public/motion/1.mp4','/public/motion/2.mp4','/public/motion/3.mp4','/public/motion/4.mp4','/public/motion/5.mp4','/public/motion/6.mp4','/public/motion/7.mp4']
+motion_clips=[f'/public/motion/{clip.name}' for clip in sorted((OUT/'public'/'motion').glob('*.mp4'),key=lambda clip:int(clip.stem))]
 reels=''.join(f'<div class="reel-panel"><video src="{clip}" muted loop playsinline preload="metadata" aria-hidden="true"></video></div>' for clip in motion_clips*2)
 home=f'''<section class="hero"><div class="hero-brand">{wordmark}<h1 class="hero-tagline">Creative studio. CGI, VFX &amp; AI.</h1></div><div class="reel-window"><div class="reel-track">{reels}</div><a href="#featured-work" class="scroll-cue" aria-label="Explore featured work"></a></div><button class="motion-toggle" aria-pressed="false">PAUSE MOTION</button></section><section class="work shell" id="featured-work"><h2>Featured Work.</h2>{grid(featured_projects)}</section>'''
 write('/',home,'LOCBIZZ MEDIA — CGI, VFX & AI Studio','home')
@@ -69,6 +70,11 @@ audi_videos=sorted((path for path in audi_dir.iterdir() if path.suffix.lower() i
 audi_items=''.join(f'<article class="audi-video-card"><video src="/public/audi/{video.name}" poster="/assets/audi-rs6.jpg" muted loop controls playsinline preload="none" data-autoplay="true"></video><p class="mono">AUDI RS6 / {int(video.stem):02d}</p></article>' for video in audi_videos)
 audi_body=f'''<article class="project-detail shell audi-project"><div class="project-intro"><h1>Audi - RS6</h1><div><p>A performance-led Audi RS6 film built from speed, light, and precision.</p><a class="modal-link" href="/#featured-work">← BACK TO FEATURED WORK</a></div></div><section class="audi-video-grid" aria-label="Audi RS6 videos">{audi_items}</section></article>'''
 write('/projects/audi-rs6/',audi_body,'Audi - RS6 — LOCBIZZ MEDIA')
+
+bmw_videos=sorted((OUT/'public'/'bmw').glob('*.mp4'),key=lambda video:int(video.stem))
+bmw_items=''.join(f'<article class="bmw-video-card"><video src="/public/bmw/{video.name}" poster="/assets/bmwshowcase.webp" muted loop controls playsinline preload="none" data-autoplay="true"></video><p class="mono">BMW SHOWCASE / {int(video.stem):02d}</p></article>' for video in bmw_videos)
+bmw_body=f'''<article class="project-detail shell bmw-project"><div class="project-intro"><h1>BMW Showcase</h1><div><p>A cinematic study of BMW design, light, and presence.</p><a class="modal-link" href="/#featured-work">← BACK TO FEATURED WORK</a></div></div><section class="bmw-video-grid" aria-label="BMW Showcase videos">{bmw_items}</section></article>'''
+write('/projects/bmw-showcase/',bmw_body,'BMW Showcase — LOCBIZZ MEDIA')
 
 supra_dir=OUT/'public'/'supra'
 supra_images=sorted(supra_dir.glob('*'),key=lambda path:int(path.stem.rsplit('(',1)[1].rstrip(')')))

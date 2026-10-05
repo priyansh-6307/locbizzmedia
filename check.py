@@ -13,7 +13,7 @@ class Links(HTMLParser):
             assert target.exists(),f'Missing {value} in {self.file}'
 parser=Links()
 pages=list(root.rglob('*.html'))
-assert len(pages)==6,len(pages)
+assert len(pages)==7,len(pages)
 for file in pages:
     text=file.read_text(encoding='utf-8')
     assert 'Lunchbox' not in text and 'lunchbox' not in text,file
@@ -25,15 +25,17 @@ assert {x['category'] for x in projects}=={'Automotive','Gaming','Product'}
 home=(root/'index.html').read_text(encoding='utf-8')
 for removed_route in ('/projects/','/about/','/blog/'):
     assert f'href="{removed_route}"' not in home, f'Exposed removed route {removed_route}'
-assert home.count('class="project-card"')==4
+assert home.count('class="project-card"')==5
+assert 'data-project="bmw-showcase"' in home and '/assets/bmwshowcase.webp' in home
+assert '"route": "/projects/bmw-showcase/"' in home
 for title,clip,logo in [('Kia Showcase','/public/motion/2.mp4','/assets/kia-logo.svg'),('Audi - RS6','/public/motion/4.mp4','/assets/audi-logo.svg'),('Toyota Supra','/public/motion/8.mp4','/assets/toyota-logo.svg'),('Ford Mustang','/public/motion/3.mp4','/assets/ford-logo.svg')]:
     assert title in home and clip in home and logo in home
     assert (root/clip.lstrip('/')).exists(), f'Missing featured clip {clip}'
     assert (root/logo.lstrip('/')).exists(), f'Missing featured logo {logo}'
-motion=['/public/motion/1.mp4','/public/motion/2.mp4','/public/motion/3.mp4','/public/motion/4.mp4','/public/motion/5.mp4','/public/motion/6.mp4','/public/motion/7.mp4']
+motion=[f'/public/motion/{i}.mp4' for i in range(1,12)]
 hero=home.split('<section class="work shell"',1)[0]
-assert hero.count('class="reel-panel"')==14
-assert hero.find(motion[0]) < hero.find(motion[1]) < hero.find(motion[2]) < hero.find(motion[3]) < hero.find(motion[4]) < hero.find(motion[5]) < hero.find(motion[6])
+assert hero.count('class="reel-panel"')==len(motion)*2
+assert all(hero.find(motion[i]) < hero.find(motion[i+1]) for i in range(len(motion)-1))
 for clip in motion: assert hero.count(clip)==2, f'Motion clip is not repeated for a seamless loop: {clip}'
 style=(root/'style.css').read_text(encoding='utf-8')
 assert 'cursor:grab' in style and 'transform:translate3d(var(--reel-x,-230px),0,0)' in style
@@ -53,6 +55,13 @@ assert audi.count('class="audi-video-card"')==6
 assert audi.count('muted loop controls playsinline preload="none" data-autoplay="true"')==6
 assert all(audi.find(audi_clips[i]) < audi.find(audi_clips[i+1]) for i in range(5))
 for clip in audi_clips: assert (root/clip.lstrip('/')).exists(), f'Missing Audi clip {clip}'
+bmw=(root/'projects'/'bmw-showcase'/'index.html').read_text(encoding='utf-8')
+bmw_clips=[f'/public/bmw/{i}.mp4' for i in range(1,9)]
+assert bmw.count('class="bmw-video-card"')==8
+assert bmw.count('muted loop controls playsinline preload="none" data-autoplay="true"')==8
+assert all(bmw.find(bmw_clips[i]) < bmw.find(bmw_clips[i+1]) for i in range(7))
+assert 'video[data-autoplay="true"]' in app
+for clip in bmw_clips: assert (root/clip.lstrip('/')).exists(), f'Missing BMW clip {clip}'
 supra=(root/'projects'/'toyota-supra'/'index.html').read_text(encoding='utf-8')
 supra_images=[f'/public/supra/New%20Project%20%28{i}%29.webp' for i in range(2,7)]
 assert 'youtube-nocookie.com/embed/qKkCl0MyXwU?autoplay=1&amp;mute=1' in supra
