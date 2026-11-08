@@ -13,7 +13,7 @@ class Links(HTMLParser):
             assert target.exists(),f'Missing {value} in {self.file}'
 parser=Links()
 pages=list(root.rglob('*.html'))
-assert len(pages)==7,len(pages)
+assert len(pages)==8,len(pages)
 for file in pages:
     text=file.read_text(encoding='utf-8')
     assert 'Lunchbox' not in text and 'lunchbox' not in text,file
@@ -25,7 +25,10 @@ assert {x['category'] for x in projects}=={'Automotive','Gaming','Product'}
 home=(root/'index.html').read_text(encoding='utf-8')
 for removed_route in ('/projects/','/about/','/blog/'):
     assert f'href="{removed_route}"' not in home, f'Exposed removed route {removed_route}'
-assert home.count('class="project-card"')==5
+assert home.count('class="project-card"')==6
+assert 'data-project="f1-showcase"' in home and '/assets/f1-showcase.jpg' in home
+assert '"route": "/projects/f1-showcase/"' in home
+assert '/public/f1/1.mp4' in home and '/assets/f1-logo.svg' in home
 assert 'data-project="bmw-showcase"' in home and '/assets/bmwshowcase.webp' in home
 assert '"route": "/projects/bmw-showcase/"' in home
 for title,clip,logo in [('Kia Showcase','/public/motion/2.mp4','/assets/kia-logo.svg'),('Audi - RS6','/public/motion/4.mp4','/assets/audi-logo.svg'),('Toyota Supra','/public/motion/8.mp4','/assets/toyota-logo.svg'),('Ford Mustang','/public/motion/3.mp4','/assets/ford-logo.svg')]:
@@ -63,6 +66,12 @@ assert bmw.count('muted loop controls playsinline preload="none" data-autoplay="
 assert all(bmw.find(bmw_clips[i]) < bmw.find(bmw_clips[i+1]) for i in range(7))
 assert 'video[data-autoplay="true"]' in app
 for clip in bmw_clips: assert (root/clip.lstrip('/')).exists(), f'Missing BMW clip {clip}'
+f1=(root/'projects'/'f1-showcase'/'index.html').read_text(encoding='utf-8')
+f1_clips=[f'/public/f1/{i}.mp4' for i in range(1,10)]
+assert f1.count('class="f1-video-card"')==9
+assert f1.count('muted loop controls playsinline preload="none" data-autoplay="true"')==9
+assert all(f1.find(f1_clips[i]) < f1.find(f1_clips[i+1]) for i in range(8))
+for clip in f1_clips: assert (root/clip.lstrip('/')).exists(), f'Missing F1 clip {clip}'
 supra=(root/'projects'/'toyota-supra'/'index.html').read_text(encoding='utf-8')
 supra_images=[f'/public/supra/New%20Project%20%28{i}%29.webp' for i in range(2,7)]
 assert 'youtube-nocookie.com/embed/qKkCl0MyXwU?autoplay=1&amp;mute=1' in supra
